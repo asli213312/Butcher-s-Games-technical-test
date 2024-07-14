@@ -3,9 +3,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class AbstractItem : MonoBehaviour, ICollidableItem
+[RequireComponent(typeof(Collider))]
+public abstract class AbstractItem : MonoBehaviour, ICollidableItem, IItemCollectable, IItem
 {
+    [SerializeField] private ItemsData data;
+
+    public ItemsData Data => data;
+
     public event Action<ICollidableItem> CollidedAction;
+    public int ItemValue => Value;
+    protected int Value { get; private set; }
+
+    public void Initialize(int itemValue) 
+    {
+        Value = itemValue;
+    }
 
 	private void OnTriggerEnter(Collider col) 
     {
@@ -19,4 +31,24 @@ public abstract class AbstractItem : MonoBehaviour, ICollidableItem
 public interface ICollidableItem 
 {
     event Action<ICollidableItem> CollidedAction;
+}
+
+public interface IItem 
+{
+    ItemsData Data { get; }
+}
+
+public interface IBadItem : IItem
+{
+
+}
+
+public interface IGoodItem : IItem
+{
+    bool IsMoney { get; }
+}
+
+public interface IItemCollectable
+{
+    int ItemValue { get; }
 }

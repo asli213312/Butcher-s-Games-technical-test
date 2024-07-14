@@ -5,9 +5,13 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class SliderBehaviour : MonoBehaviour, IGameStartable
+public class SliderBehaviour : MonoBehaviour
 {
+
+	[Zenject.Inject] private SoundHandler _soundHandler;
 	[Zenject.Inject] private PlayerController _playerController;
+	[Zenject.Inject] private GameStateHandler _gameStateHandler;
+	[Zenject.Inject] private ItemController _itemController;
 
 	[SerializeField] private SliderBehaviourData data;
 	[SerializeField] private TextMeshProUGUI statusText;
@@ -15,13 +19,17 @@ public class SliderBehaviour : MonoBehaviour, IGameStartable
 	[SerializeField] private Image fillImage;
 
 	public event Action<SliderBehaviourState> StateChanged;
+	
+	public Slider Slider => slider;
+	public SliderBehaviourState CurrentState => _currentState;
 
-	private ItemController _itemController;
 	private SliderBehaviourState _currentState;
 
 	private void Start() 
 	{
 		_playerController.Mover.CurrentInputType.MoveStarted += OnMoveStarted;
+		_gameStateHandler.FailAction += OnFail;
+		_itemController.ItemCollideAction += OnCollideItem;
 
 		_currentState = data.states[1];
 		slider.maxValue = data.states[^1].stateRange.y;
@@ -33,16 +41,7 @@ public class SliderBehaviour : MonoBehaviour, IGameStartable
 	private void OnDestroy() 
 	{
 		_playerController.Mover.CurrentInputType.MoveStarted -= OnMoveStarted;
-	}
-
-	public void OnStart(ItemController itemController) 
-	{
-		_itemController = itemController;
-		_itemController.ItemCollideAction += OnCollideItem;
-	}
-
-	public void OnEnd(ItemController itemController) 
-	{
+		_gameStateHandler.FailAction -= OnFail;
 		_itemController.ItemCollideAction -= OnCollideItem;
 	}
 
@@ -51,16 +50,18 @@ public class SliderBehaviour : MonoBehaviour, IGameStartable
 		slider.gameObject.SetActive(true);
 	}
 
+	private void OnFail() 
+	{
+		slider.gameObject.SetActive(false);
+	}
+
     private void OnCollideItem(ICollidableItem item) 
     {
-    	if (item is GoodItem) 
-    	{
-    		slider.value += _currentState.stepValue;
-    	}
-    	else if (item is BadItem) 
-    	{
-    		slider.value -= _currentState.stepValue;
-    	}
+		if (item is AbstractItem abstractItem && abstractItem is not IItemCollectable) return;
+
+		IItemCollectable collectableItem = item as IItemCollectable;
+
+    	slider.value += collectableItem.ItemValue;
 
     	if (slider.value <= 0) 
     	{
@@ -98,6 +99,9 @@ public class SliderBehaviour : MonoBehaviour, IGameStartable
     {
     	statusText.text = _currentState.stateText;
     	fillImage.sprite = _currentState.fillSprite;
+		statusText.color = _currentState.stateColor;
+
+		_soundHandler.InvokeOneClip(_currentState.stateSound);
 
     	StateChanged?.Invoke(_currentState);
     }

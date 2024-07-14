@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum MoveStrategy { Linear }
+
 public abstract class PlayerMoveStrategy
 {
     protected float MoveSpeed;
@@ -16,15 +18,17 @@ public abstract class PlayerMoveStrategy
 
 public class PlayerMoveLinear : PlayerMoveStrategy 
 {
-    private Transform _followObject;
+    private Vector3 _direction;
+    private Transform _playerObj;
 
-    public PlayerMoveLinear(Transform followObject, float moveSpeed) : base(moveSpeed)
+    public PlayerMoveLinear(Transform playerObj, float moveSpeed, Vector3 direction) : base(moveSpeed)
     {
-        _followObject = followObject;
+        _playerObj = playerObj;
+        _direction = direction;
     }
 
     public override void Handle() 
     {
-        _followObject.position += new Vector3(0, 0, MoveSpeed * Time.deltaTime);
+        _playerObj.position += _direction * MoveSpeed * Time.deltaTime;
     }
 }

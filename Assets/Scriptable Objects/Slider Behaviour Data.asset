@@ -12,23 +12,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10cac4b321451974c828a87f9f7c3a3c, type: 3}
   m_Name: Slider Behaviour Data
   m_EditorClassIdentifier: 
-  initialValue: 11
+  initialValue: 15
   states:
-  - fillSprite: {fileID: 21300000, guid: 8c24f4c28a8605e4e8ab34d987e85422, type: 3}
-    stateMesh: {fileID: -6129067494882945614, guid: 1e71b346f44100b45a11613e78e194e3,
+  - fillSprite: {fileID: 21300000, guid: 39e8283e87f84ce4ca2238b1889f0802, type: 3}
+    stateMesh: {fileID: -6129067494882945614, guid: 301a126eec268f64fa9f4c8a609cce19,
       type: 3}
     stateRange: {x: 0, y: 10}
-    stepValue: 3
+    stateColor: {r: 1, g: 0.0990566, b: 0.0990566, a: 1}
+    stateSound: {fileID: 8300000, guid: 6dc14d5982637a7488998809dc261296, type: 3}
     stateText: "\u0411\u041E\u041C\u0416"
-  - fillSprite: {fileID: 21300000, guid: 7951e58a54f20d34b96282905f5dbf98, type: 3}
+  - fillSprite: {fileID: 21300000, guid: 8c24f4c28a8605e4e8ab34d987e85422, type: 3}
     stateMesh: {fileID: -4399381563841598653, guid: 1e71b346f44100b45a11613e78e194e3,
       type: 3}
-    stateRange: {x: 11, y: 21}
-    stepValue: 4
+    stateRange: {x: 11, y: 25}
+    stateColor: {r: 1, g: 0.63529414, b: 0, a: 1}
+    stateSound: {fileID: 8300000, guid: 01c58341ba026bd44ab61988fe471644, type: 3}
     stateText: "\u0411\u0415\u0414\u041D\u042B\u0419"
-  - fillSprite: {fileID: 21300000, guid: 7951e58a54f20d34b96282905f5dbf98, type: 3}
-    stateMesh: {fileID: 8669875273024017111, guid: 1e71b346f44100b45a11613e78e194e3,
+  - fillSprite: {fileID: 21300000, guid: a58934adc8ce7bb4fb78a1aac4344883, type: 3}
+    stateMesh: {fileID: 8669875273024017111, guid: 301a126eec268f64fa9f4c8a609cce19,
       type: 3}
-    stateRange: {x: 22, y: 33}
-    stepValue: 4
+    stateRange: {x: 26, y: 35}
+    stateColor: {r: 0, g: 1, b: 0.07986307, a: 1}
+    stateSound: {fileID: 8300000, guid: 01c58341ba026bd44ab61988fe471644, type: 3}
     stateText: "\u0421\u041E\u0421\u0422\u041E\u042F\u0422\u0415\u041B\u042C\u041D\u042B\u0419"
+  - fillSprite: {fileID: 21300000, guid: 7951e58a54f20d34b96282905f5dbf98, type: 3}
+    stateMesh: {fileID: 7558414288812079109, guid: 301a126eec268f64fa9f4c8a609cce19,
+      type: 3}
+    stateRange: {x: 36, y: 50}
+    stateColor: {r: 1, g: 0.9986277, b: 0, a: 1}
+    stateSound: {fileID: 8300000, guid: 01c58341ba026bd44ab61988fe471644, type: 3}
+    stateText: "\u0411\u041E\u0413\u0410\u0422\u042B\u0419"

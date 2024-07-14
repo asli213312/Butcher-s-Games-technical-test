@@ -16,6 +16,7 @@ public class SliderBehaviourState
 	public Sprite fillSprite;
 	public Mesh stateMesh;
 	public Vector2 stateRange;
-	public int stepValue;
+	public Color stateColor;
+	public AudioClip stateSound;
 	public string stateText;
 }

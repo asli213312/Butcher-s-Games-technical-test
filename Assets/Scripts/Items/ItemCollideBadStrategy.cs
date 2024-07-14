@@ -7,6 +7,7 @@ using UnityEngine;
 public class ItemCollideBadStrategy : ItemCollideStrategy
 {
 	protected override ICollidableItem ItemType { get => _badItem; set => _badItem = value as BadItem; }
+	protected override string ItemValuePattern => "";
 	private BadItem _badItem;
 
 	protected override void Invoke() 

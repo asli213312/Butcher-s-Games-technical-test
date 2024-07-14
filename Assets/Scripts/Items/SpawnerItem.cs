@@ -6,6 +6,8 @@ using UnityEngine;
 
 public class SpawnerItem : MonoBehaviour
 {	
+	[Zenject.Inject] private ItemController _itemController;
+
 	[SerializeField, SerializeReference] private AbstractItem[] items;	
 	[SerializeField] private Transform[] itemPatterns;
 
@@ -54,11 +56,11 @@ public class SpawnerItem : MonoBehaviour
 
 			if (item is GoodItem) 
 			{
-				_factories.Add(new GoodItemFactory(new ItemFactoryData(item), this));
+				_factories.Add(new GoodItemFactory(new ItemFactoryData(item, _itemController.Config.goodItemsData), this));
 			}
 			else if (item is BadItem) 
 			{
-				_factories.Add(new BadItemFactory(new ItemFactoryData(item), this));
+				_factories.Add(new BadItemFactory(new ItemFactoryData(item, _itemController.Config.badItemsData), this));
 			}
 		}
 	}

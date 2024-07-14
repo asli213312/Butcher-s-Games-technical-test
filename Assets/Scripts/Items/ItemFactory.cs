@@ -78,10 +78,12 @@ public class BadItemFactory : ItemFactory
 
 public class ItemFactoryData 
 {
+	public ItemsData ItemData;
 	public ICollidableItem ItemType;
 
-	public ItemFactoryData(ICollidableItem itemType) 
+	public ItemFactoryData(ICollidableItem itemType, ItemsData itemData) 
 	{
 		ItemType = itemType;
+		ItemData = itemData;
 	}
 }

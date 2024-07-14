@@ -10,7 +10,7 @@ public class TouchInput : AbstractInput
         
     }
 
-    public override void Handle() 
+    protected override void OnHandle() 
     {
     	if (Input.touchCount > 0)
         {
@@ -19,15 +19,17 @@ public class TouchInput : AbstractInput
             if (touch.phase == TouchPhase.Began)
             {
                 _lastMousePosition = touch.position;
-                _isDragging = true;
+                IsWorking = true;
                 StartMove();
             }
 
-            if ((touch.phase == TouchPhase.Moved || touch.phase == TouchPhase.Stationary) && _isDragging)
+            if ((touch.phase == TouchPhase.Moved || touch.phase == TouchPhase.Stationary) && IsWorking)
             {
                 Vector3 currentTouchPosition = touch.position;
                 Vector3 delta = currentTouchPosition - _lastMousePosition;
                 Vector3 targetPosition = transform.position + new Vector3(delta.x * Time.deltaTime, 0, 0);
+
+                //targetPosition.x = Mathf.Clamp(targetPosition.x, InputData.Bounds.x, InputData.Bounds.y);
 
                 transform.position = Vector3.Lerp(transform.position, targetPosition, InputData.SmoothSpeed);
 
@@ -36,7 +38,7 @@ public class TouchInput : AbstractInput
 
             if (touch.phase == TouchPhase.Ended)
             {
-                _isDragging = false;
+                IsWorking = false;
             }
         }
     }

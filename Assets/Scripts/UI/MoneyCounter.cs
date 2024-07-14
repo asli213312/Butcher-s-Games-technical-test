@@ -4,28 +4,48 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class MoneyCounter : AbstractCounter, IGameStartable
+public class MoneyCounter : AbstractCounter, IObserver<GameStateHandler>
 {
-	private ItemController _itemController;
+	[Zenject.Inject] private SliderBehaviour _sliderBehaviour;
+	[Zenject.Inject] private PlayerController _playerController;
+	[Zenject.Inject] private GameStateHandler _gameStateHandler;
+	[Zenject.Inject] private ItemController _itemController;
 
-	public void OnStart(ItemController itemController) 
+	protected override void Start() 
 	{
-		_itemController = itemController;
-		_itemController.ItemCollideAction += UpdateCounter;	
+		base.Start();
+
+		_playerController.Mover.CurrentInputType.MoveStarted += OnGameStarted;
+		_itemController.ItemCollideAction += UpdateCounter;
+
+		Initialize(Mathf.RoundToInt(_sliderBehaviour.Slider.value));
 	}
 
-	public void OnEnd(ItemController itemController) 
+	protected override void OnDestroy() 
 	{
-		_itemController.ItemCollideAction -= UpdateCounter;	
+		base.OnDestroy();
+
+		_playerController.Mover.CurrentInputType.MoveStarted -= OnGameStarted;
+		_itemController.ItemCollideAction -= UpdateCounter;
+	}
+
+	public void OnNotify<GameStateHandler>() 
+	{
+		counterText.gameObject.SetActive(false);
+	}
+
+	private void OnGameStarted() 
+	{
+		counterText.gameObject.SetActive(true);
 	}
 
 	private void UpdateCounter(ICollidableItem item) 
 	{
-		if (item is not GoodItem goodItem) return;
-		
-		if (goodItem.IsMoney) 
+		AbstractItem abstractItem = item as AbstractItem;
+
+		if (abstractItem is IItemCollectable collectableItem) 
 		{
-			InvokeCount();
+			InvokeCount(collectableItem.ItemValue);
 		}
 	}
 }
